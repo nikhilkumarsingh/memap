@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+    Main
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s1 m3 l3 xl3"></div>
+                <div class="col s10 m6 l6 xl6">
+                    <form method="post" action="/find">
+                        <div class="input-field">
+                            <label for="img" class="active"> Upload image </label>
+                            <a class="btn btn-floating pulse"><i class="material-icons">menu</i> <input id="img" type="file" accept="image/*" capture="camera"></a>
+                        </div>
+                        <button class="btn waves-effect waves-light">Submit</button>
+                    </form>
+                </div>
+            <div class="col s1 m3 l3 xl3"></div>
+        </div>
+    </div>
+{% endblock %}
