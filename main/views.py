@@ -5,17 +5,50 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
 
+from clarifai.rest import ClarifaiApp
 from taggit.models import Tag
+from PIL import Image
 
+from .models import Item
+
+
+
+def detect(filename):   
+    app = ClarifaiApp(api_key='ddca6c15086d4d57835c5cc782df6505')
+    model = app.models.get("general-v1.3")
+    data = model.predict_by_filename(filename)
+    new = [x['name'] for x in data['outputs'][0]['data']['concepts'] if x['value']>=0.95]
+    xfilter = lambda old,new: len(set(new).intersection(set(old))) / len(new)
+
+    old = [[tag.name for tag in item.tags.all()] for item in Item.objects.all()]
+    matches = sorted([(idx,xfilter(x,new)) for idx,x in enumerate(old) if xfilter(x,new)>=0.0], key=lambda x:x[1])
+
+    if not matches:
+        return None
+
+    final = []
+
+    for idx,x in enumerate(Item.objects.all()):
+        if idx in list(zip(*matches))[0]:
+            final.append(x)
+
+    return final
 
 
 @login_required
 def index(request):
-    if not request.user.is_authenticated:    
+    if not request.user.is_authenticated():    
         print("GO")
     else:
-        print("HI")
 
+        if request.method == "GET":
+            return render(request, 'index.html')
+
+        else:
+            filename = "test.jpg"
+            Image.open(request.FILES['img']).save(filename)
+            items = detect(filename)
+            return render(request, 'results.html', {'items':items})
     return HttpResponse("Yo")
 
 
