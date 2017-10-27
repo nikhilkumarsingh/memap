@@ -18,6 +18,7 @@ class Note(models.Model):
 	text = models.TextField(blank=True, null=True)
 	image = models.URLField(blank=True, null=True)
 	audio = models.URLField(blank=True, null=True)
+	video = models.URLField(blank=True, null=True)	
 
 	def __str__(self):
 		return self.text
