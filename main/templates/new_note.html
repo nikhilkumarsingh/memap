@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}
+    Main
+{% endblock %}
+{% block content %}
+
+<form action="#">
+	<div class="center">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+
+             <h3 style="text-align: center; color: white"> New Note</h3>
+            <br>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="form-group">
+                        <input type="text" name="text" id="txt" class="form-control input-lg" placeholder="Text" tabindex="1">
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
+                                <i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">camera_alt</i>
+                                <input name="img" id="img" type="file" accept="image/*" capture="camera" style="visibility:hidden;">
+                            </div>
+            </div>
+            <br>
+            <div class="form-group">
+            	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp " style="height: 10%">
+            	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">mic</i>
+                <input name="audio" id="audio" type="file" accept="audio/*" capture="microphone" style="visibility:hidden;">
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+            	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
+            	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">videocam</i>
+                <input name="video" id="video" type="file" accept="video/*" capture="camcorder" style="visibility:hidden;">
+            </div>
+            </div>
+           
+            <br>
+           
+        </div>
+    </div>
+</div>
+    <br>
+</form>
+
+<script type="text/javascript">
+
+        $(function(){
+
+
+        var $body = $("body");
+       
+        
+          setInterval(help, 500);
+        });
+
+        function help()
+    {
+        var $temp = $('.temp');
+        console.log($temp);
+        var height = $temp.css('height');
+        console.log(height);
+        $temp.css('width', height);
+    }
+
+    </script>
+
+{% endblock %}
