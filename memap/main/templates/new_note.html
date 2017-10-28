@@ -6,19 +6,18 @@
 
 <form action="" enctype="multipart/form-data" method="post">
     {% csrf_token %}
-	<div class="center">
-    <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-
+	<div class="row center center-align">
+    <div class="row center center-align">
+        <div class="col xl2 m2 l2 s1"></div>
+        <div class="col xl8 m8 l8 s10">
              <h3 style="text-align: center; color: white"> New Note</h3>
             <br>
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
+                <div class="row center center-align">
                     <div class="input-field">
                         <input type="text" name="text" id="txt" class="form-control input-lg" placeholder="Text" tabindex="1">
                     </div>
                 </div>
-
             </div>
             <br>
             <div class="file-field input-field">
@@ -41,14 +40,13 @@
                 <input name="video" id="video" type="file" accept="video/*" capture="camcorder" >
             </div>
             </div>
-           
             <br>
-           
         </div>
+        <div class="col xl2 m2 l2 s1"></div>
     </div>
 </div>
     <br>
-    <button type="submit"> Submit </button>
+    <button class="btn btn-large" type="submit"> Submit </button>
 </form>
 
 <script type="text/javascript">
@@ -57,8 +55,6 @@
 
 
         var $body = $("body");
-       
-        
           setInterval(help, 500);
         });
 
@@ -70,7 +66,5 @@
         console.log(height);
         $temp.css('width', height);
     }
-
     </script>
-
 {% endblock %}
