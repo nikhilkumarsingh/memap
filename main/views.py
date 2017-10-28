@@ -32,7 +32,7 @@ def detect(filename):
         if idx in list(zip(*matches))[0]:
             final.append(x)
 
-    return final
+    return final[0]
 
 
 @login_required
@@ -47,8 +47,8 @@ def index(request):
         else:
             filename = "test.jpg"
             Image.open(request.FILES['img']).save(filename)
-            items = detect(filename)
-            return render(request, 'results.html', {'items':items})
+            item = detect(filename)
+            return render(request, 'results.html', {'item':item})
     return HttpResponse("Yo")
 
 
