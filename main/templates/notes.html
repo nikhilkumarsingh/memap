@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+    Main
+{% endblock %}
+{% block content %}
+{% for note in notes %}
+   <div class="row">
+        <div class="col s12 m7">
+          <div class="card">
+            <div class="card-image">
+              {% if note.image}
+              <img src="{{note.image}}">
+              {% else %}
+              <img src="http://www.bestprintingonline.com/help_resources/Image/Ducky_Head_Web_Low-Res.jpg">
+              {% endif %}
+            </div>
+            <div class="card-content">
+              {% if note.text %}
+              <p><strong>{{note.created_at}}</strong>: {{note.text}}</p>
+              {% else %}
+              <p><strong>{{note.created_at}}</strong></p>
+              {% endif %}
+            </div>
+            <div class="card-action">
+              <a href="#">AUDIO VIDEO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endfor %}
