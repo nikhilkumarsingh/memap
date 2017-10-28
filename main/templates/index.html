@@ -5,25 +5,35 @@
 {% block content %}
     <div class="container center valign-wrapper center-align" style="height: 100%;background-color:#3f51b5">
         <div class="row center center-align">
-        <form method="post" action="/find" >
-            <div class="input-field center center-align" style="background-color:#3f51b5 ">
-                    <a class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1" id="temp" style="height: 50%"><i class=" material-icons" style="font-size: 10rem;margin-top: 23vh;">camera_alt</i> <input id="img" type="file" accept="image/*" capture="camera" style="visibility:hidden;"></a>
-            </div>
-        </form>
-    </div>
+            <div class="col s1 m3 l3 xl3"></div>
+                <div class="col s10 m6 l6 xl6 center center-align">
+                    <form method="post" action="/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="file-field input-field center center-align" style="background-color:#3f51b5 ">
+                           <div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1" id="temp" style="height: 50%">
+                                <i class=" material-icons" style="font-size: 10rem;margin-top: 23vh;">camera_alt</i>
+                                <input name="img" id="img" type="file" accept="image/*" capture="camera">
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light">Submit</button>
+                    </form>
+                </div>
+            <div class="col s1 m3 l3 xl3"></div>
+        </div>
     </div>
 
-<script>
-    $(function(){
+    <script type="text/javascript">
+
+        $(function(){
+
+
         var $body = $("body");
         $body.css({"background-color":"#3f51b5"});
         
+          setInterval(help, 500);
+        });
 
-        setInterval(help, 500);
-
-    });
-
-    function help()
+        function help()
     {
         var $temp = $('#temp');
         console.log($temp);
@@ -32,6 +42,6 @@
         $temp.css('width', height);
     }
 
-</script>
-
+    </script>
 {% endblock %}
+

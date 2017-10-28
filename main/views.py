@@ -9,7 +9,7 @@ from clarifai.rest import ClarifaiApp
 from taggit.models import Tag
 from PIL import Image
 
-from .models import Item
+from .models import Item, Note
 
 
 
@@ -50,6 +50,21 @@ def index(request):
             items = detect(filename)
             return render(request, 'results.html', {'items':items})
     return HttpResponse("Yo")
+
+
+@login_required
+def view_notes(request, item_id):
+    if not request.user.is_authenticated():    
+        print("GO")
+    else:
+
+        if request.method == "GET":
+            notes = Note.objects.filter(item__id = item_id)
+            return render(request, 'notes.html', {'notes':notes})
+
+
+
+
 
 
 

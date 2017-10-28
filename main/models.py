@@ -19,6 +19,7 @@ class Note(models.Model):
 	image = models.URLField(blank=True, null=True)
 	audio = models.URLField(blank=True, null=True)
 	video = models.URLField(blank=True, null=True)	
+	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.text
