@@ -4,7 +4,8 @@
 {% endblock %}
 {% block content %}
 
-<form action="#">
+<form action="" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
 	<div class="center">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
@@ -13,31 +14,31 @@
             <br>
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
-                    <div class="form-group">
+                    <div class="input-field">
                         <input type="text" name="text" id="txt" class="form-control input-lg" placeholder="Text" tabindex="1">
                     </div>
                 </div>
 
             </div>
             <br>
-            <div class="form-group">
+            <div class="file-field input-field">
                 <div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
                                 <i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">camera_alt</i>
-                                <input name="img" id="img" type="file" accept="image/*" capture="camera" style="visibility:hidden;">
+                                <input name="img" id="img" type="file" accept="image/*" capture="camera" >
                             </div>
             </div>
             <br>
-            <div class="form-group">
+            <div class="file-field input-field">
             	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp " style="height: 10%">
             	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">mic</i>
-                <input name="audio" id="audio" type="file" accept="audio/*" capture="microphone" style="visibility:hidden;">
+                <input name="audio" id="audio" type="file" accept="audio/*" capture="microphone" >
                 </div>
             </div>
             <br>
-            <div class="form-group">
+            <div class="file-field input-field">
             	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
             	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">videocam</i>
-                <input name="video" id="video" type="file" accept="video/*" capture="camcorder" style="visibility:hidden;">
+                <input name="video" id="video" type="file" accept="video/*" capture="camcorder" >
             </div>
             </div>
            
@@ -47,6 +48,7 @@
     </div>
 </div>
     <br>
+    <button type="submit"> Submit </button>
 </form>
 
 <script type="text/javascript">

@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from main import views as main_views
+from memap.main import views as main_views
 
 urlpatterns = [
 	url(r'^$', main_views.index),
 	url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^admin/', admin.site.urls),
+    url(r'^item/(?P<item_id>\d+)/new/$', main_views.create_note),
+    url(r'^item/(?P<item_id>\d+)/$', main_views.view_notes),
 ]

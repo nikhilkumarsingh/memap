@@ -3,15 +3,19 @@
     Main
 {% endblock %}
 {% block content %}
+
+{% if notes|length == 0 %}
+  Add some note about this item by clicking the + button.
+{% else %}
+
+
 {% for note in notes %}
    <div class="row">
         <div class="col s12 m7">
           <div class="card">
             <div class="card-image">
               {% if note.image %}
-              <img src="{{note.image}}">
-              {% else %}
-              <img src="http://www.bestprintingonline.com/help_resources/Image/Ducky_Head_Web_Low-Res.jpg">
+              <img src="/static/{{note.id}}_image.jpeg"  height=400 width=200>
               {% endif %}
             </div>
             <div class="card-content">
@@ -29,6 +33,7 @@
       </div>
 {% endfor %}
 
+{% endif %}
  <div class="fixed-action-btn">
     <a class="btn-floating btn-large indigo waves-effect waves-light" href= "new">
       <i class="large material-icons">add</i>

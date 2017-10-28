@@ -10,7 +10,7 @@ class Item(models.Model):
 	tags = TaggableManager(blank=True)
 	
 	def __str__(self):
-		return self.name
+		return self.name if self.name else "No title"
 
 
 class Note(models.Model):
@@ -22,4 +22,4 @@ class Note(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return self.text
+		return self.text if self.text else "No title"

@@ -3,11 +3,14 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-
+from django.conf import settings as djangoSettings
 
 from clarifai.rest import ClarifaiApp
 from taggit.models import Tag
 from PIL import Image
+import kloudless
+from contextlib import closing
+import os
 
 from .models import Item, Note
 
@@ -21,10 +24,10 @@ def detect(filename):
     xfilter = lambda old,new: len(set(new).intersection(set(old))) / len(new)
 
     old = [[tag.name for tag in item.tags.all()] for item in Item.objects.all()]
-    matches = sorted([(idx,xfilter(x,new)) for idx,x in enumerate(old) if xfilter(x,new)>=0.0], key=lambda x:x[1])
+    matches = sorted([(idx,xfilter(x,new)) for idx,x in enumerate(old) if xfilter(x,new)>=0.6], key=lambda x:x[1])
 
     if not matches:
-        return None
+        return None, new
 
     final = []
 
@@ -32,7 +35,7 @@ def detect(filename):
         if idx in list(zip(*matches))[0]:
             final.append(x)
 
-    return final[0]
+    return 1, final[0]
 
 
 @login_required
@@ -47,8 +50,16 @@ def index(request):
         else:
             filename = "test.jpg"
             Image.open(request.FILES['img']).save(filename)
-            item = detect(filename)
-            return render(request, 'results.html', {'item':item})
+            res, item = detect(filename)
+            if not res:
+                new = Item()
+                new.user = request.user
+                new.save()
+                for tag in item:
+                    new.tags.add(tag)
+                new.save()
+                return redirect('/item/{}/'.format(new.id))
+            return redirect('/item/{}/'.format(item.id))
     return HttpResponse("Yo")
 
 
@@ -57,16 +68,76 @@ def view_notes(request, item_id):
     if not request.user.is_authenticated():    
         print("GO")
     else:
+        kloudless.configure(api_key="OiVoCBhFF0MfIqbilVx9oBpzjC9aUJTm84D_rO_CnR_9JOlo")
+        accounts = kloudless.Account.all()
+        account = accounts[0]
 
         if request.method == "GET":
             notes = Note.objects.filter(item__id = item_id)
+            for note in notes:
+                if note.audio:
+                    filename = '{0}/{1}_audio.mp3'.format(djangoSettings.STATIC_ROOT.replace('staticfiles','static'),note.id)
+                    if not os.path.exists(filename):
+                        with closing(account.files(id=note.audio).contents()) as r:
+                            data = r.content
+                        with open(filename,'wb') as t:
+                            t.write(data)
+
+                if note.video:
+                    filename = '{0}/{1}_video.mp4'.format(djangoSettings.STATIC_ROOT.replace('staticfiles','static'),note.id)
+                    if not os.path.exists(filename):
+                        with closing(account.files(id=note.video).contents()) as r:
+                            data = r.content
+                        with open(filename,'wb') as t:
+                            t.write(data)
+
+                if note.image:
+                    filename = '{0}/{1}_image.jpeg'.format(djangoSettings.STATIC_ROOT.replace('staticfiles','static'),note.id)
+                    if not os.path.exists(filename):
+                        with closing(account.files(id=note.image).contents()) as r:
+                            data = r.content
+
+                        with open(filename,'wb') as t:
+                            t.write(data)
+
+            print("yo!")
             return render(request, 'notes.html', {'notes':notes})
 
 
+@login_required
+def create_note(request, item_id):
+    if request.method == "GET":
+        return render(request, 'new_note.html')
+    else:
+        text = request.POST.get('text')
+        audio = request.FILES.get('audio')
+        image = request.FILES.get('img')
+        video = request.FILES.get('video')
 
+        note = Note()
+        note.item = Item.objects.get(id=item_id)
+        note.text = text
+        note.save()
 
+        kloudless.configure(api_key="OiVoCBhFF0MfIqbilVx9oBpzjC9aUJTm84D_rO_CnR_9JOlo")
+        accounts = kloudless.Account.all()
+        account = accounts[0]
 
+        if audio:
+            k = account.files.create(file_name='{}_audio.mp3'.format(note.id), file_data=audio, parent_id='F9LfiHM4sTLkoZp5Y3pMSesUO5_yKeMrNpZBzxvERUxA=')
+            note.audio = k['id']
 
+        if video:
+            k = account.files.create(file_name='{}_video.mp4'.format(note.id), file_data=video, parent_id='F9LfiHM4sTLkoZp5Y3pMSesUO5_yKeMrNpZBzxvERUxA=')
+            note.video = k['id']
+
+        if image:
+            k = account.files.create(file_name='{}_image.jpeg'.format(note.id), file_data=image, parent_id='F9LfiHM4sTLkoZp5Y3pMSesUO5_yKeMrNpZBzxvERUxA=')
+            note.image = k['id']
+
+        note.save()
+
+        return redirect("/")
 
 
 
