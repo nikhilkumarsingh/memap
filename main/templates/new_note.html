@@ -5,6 +5,7 @@
 {% block content %}
 
 <form action="#">
+	<div class="center">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 
@@ -18,26 +19,56 @@
                 </div>
 
             </div>
+            <br>
             <div class="form-group">
-                <input name="img" id="img" type="file" accept="image/*" capture="camera">
+                <div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
+                                <i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">camera_alt</i>
+                                <input name="img" id="img" type="file" accept="image/*" capture="camera" style="visibility:hidden;">
+                            </div>
             </div>
+            <br>
             <div class="form-group">
-                <input name="audio" id="audio" type="file" accept="audio/*" capture="microphone">
+            	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp " style="height: 10%">
+            	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">mic</i>
+                <input name="audio" id="audio" type="file" accept="audio/*" capture="microphone" style="visibility:hidden;">
+                </div>
             </div>
-
+            <br>
             <div class="form-group">
-                <input name="video" id="video" type="file" accept="video/*" capture="camcorder">
+            	<div class="btn btn-floating waves-effect waves-light btn-flat indigo lighten-1 temp" style="height: 10%">
+            	<i class=" material-icons" style="font-size: 2rem;margin-top: 1.5vh;">videocam</i>
+                <input name="video" id="video" type="file" accept="video/*" capture="camcorder" style="visibility:hidden;">
+            </div>
             </div>
            
             <br>
            
         </div>
     </div>
+</div>
     <br>
 </form>
 
+<script type="text/javascript">
+
+        $(function(){
+
+
+        var $body = $("body");
+       
+        
+          setInterval(help, 500);
+        });
+
+        function help()
+    {
+        var $temp = $('.temp');
+        console.log($temp);
+        var height = $temp.css('height');
+        console.log(height);
+        $temp.css('width', height);
+    }
+
+    </script>
+
 {% endblock %}
-
-
-            
-          <button class="btn waves-effect waves-light">Submit</button>
